@@ -47,7 +47,7 @@ impl Labyrinth {
         let mut content = content.join("");
         let content_len = content.len();
         if content_len % 8 != 0{
-            content.push_str(" ".repeat(content_len % 8).as_str())
+            content.push_str(" ".repeat(8 - (content_len % 8)).as_str())
         }
         let content_len = content.len();
         for i in 0..content_len/8{
