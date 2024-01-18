@@ -7,34 +7,30 @@ struct Config{
     path_from: String,
     path_to: String
 }
-fn check_config(conf: &Config) -> Result<(), &'static str>{
-    let actions: Vec<String> = vec![String::from("serialize"), String::from("deserialize")];
-    if !actions.contains(&conf.action){
-        return Err("Incorrect action!");
+
+fn parse_config() -> Result<Config, &'static str>{
+    let args: Vec<String> = env::args().collect();
+    if args.len() != 4{
+        return Err("Invalid args count!");
     }
-    match helpers::check_file(&conf.path_from){
+    if args[1] != "serialize".to_string() && args[1] != "deserialize".to_string(){
+        return Err("Invalid action!");
+    }
+    match helpers::check_file(&args[2]){
         Ok(_) => {}
         Err(_) => return Err("Incorrect input file")
     }
-    Ok(())
-}
-fn get_config() -> Result<Config, &'static str>{
-    let args: Vec<String> = env::args().collect();
     let config = Config{
         action: args[1].clone(),
         path_from: args[2].clone(),
         path_to: args[3].clone(),
     };
-
-    match check_config(&config) {
-        Ok(_) => return Ok(config),
-        Err(err) => return Err(err),
-    }
+    return Ok(config);
 }
 fn main() -> Result<(), &'static str> {
     let config: Config;
     let lab: Labyrinth;
-    match get_config(){
+    match parse_config(){
         Ok(conf) => config = conf,
         Err(err) => return Err(err),
     };
