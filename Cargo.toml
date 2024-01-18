@@ -10,5 +10,5 @@ path = "src/main.rs"
 
 [lib]
 name = "lib"
-path = "src/libs/content.rs"
+path = "src/lib/lib.rs"
 
